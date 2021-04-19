@@ -1,0 +1,24 @@
+{
+  "name": "api-pgsql",
+  "version": "0.0.1",
+  "description": "boilerplate api with postgresql",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "env NODE_ENV=dev nodemon src/index.js"
+  },
+  "author": "daphaz",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "helmet": "^4.5.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.6.0",
+    "sequelize": "^5.21.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

@@ -1,0 +1,34 @@
+GET http://localhost:4000/user/1
+
+###
+
+POST http://localhost:4000/user/create
+Content-Type: application/json
+
+{
+    "email": "jhon@doe.fr",
+    "password": "test",
+    "firstname": "jhon",
+    "lastname": "doe"
+}
+
+###
+
+PUT http://localhost:4000/user/update/1
+Content-Type: application/json
+
+{
+    "email": "test@doe.com",
+    "password": "test123",
+    "firstname": "jean",
+    "lastname": "robert"
+}
+
+###
+
+DELETE http://localhost:4000/user/delete
+Content-Type: application/json
+
+{
+    "id": 1
+}

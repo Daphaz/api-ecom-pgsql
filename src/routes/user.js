@@ -88,7 +88,7 @@ router.get("/:id", user.getUser);
  *            schema:
  *              $ref: '#/components/schemas/User'
  *      400:
- *        description: there missing field in body
+ *        description: there missing field in body or email is inValid
  *      401:
  *        description: The email as already used
  *      500:

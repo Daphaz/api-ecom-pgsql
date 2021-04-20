@@ -3,7 +3,7 @@ const user = (sequelize, DataType) => {
 		"user",
 		{
 			id: {
-				type: DataType.INTEGER(11),
+				type: DataType.INTEGER,
 				primaryKey: true,
 				autoIncrement: true,
 			},

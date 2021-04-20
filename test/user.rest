@@ -1,4 +1,5 @@
-GET http://localhost:4000/user/3?apiKey={{$dotenv API_KEY}}
+GET http://localhost:4000/user/4
+Content-Type: application/json
 
 ### Create
 
@@ -32,3 +33,7 @@ Content-Type: application/json
 {
     "id": 3
 }
+
+###
+
+GET http://localhost:4000/api-docs

@@ -35,7 +35,7 @@ exports.createUser = async (req, res) => {
 	});
 
 	if (emailExists) {
-		res.status(400).send({
+		res.status(401).send({
 			message: "This email as already used",
 		});
 	}
@@ -90,7 +90,7 @@ exports.updateUser = async (req, res) => {
 
 		user.save();
 
-		return res.status(200).send({
+		return res.status(204).send({
 			message: `User ${id} was updated !`,
 		});
 	} catch (err) {
@@ -98,8 +98,6 @@ exports.updateUser = async (req, res) => {
 			message: `Error: ${err.message}`,
 		});
 	}
-
-	return res.status(200).send(user);
 };
 
 exports.deleteUser = async (req, res) => {

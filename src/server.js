@@ -6,7 +6,6 @@ import helmet from "helmet";
 import fs from "fs";
 import path from "path";
 import { specs, swaggerUI } from "./docs";
-import { isAuthenticated } from "./utils";
 import routes from "./routes";
 
 const app = express();
@@ -16,7 +15,12 @@ const accessLogStream = fs.createWriteStream(
 	{ flags: "a" }
 );
 
-app.use(cors());
+app.use(
+	cors({
+		credentials: true,
+		origin: "http://localhost:3000",
+	})
+);
 app.use(helmet());
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.json({ limit: "50mb" }));
@@ -24,6 +28,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use("/user", routes.user);
+app.use("/auth", routes.auth);
 
 app.use((req, res) => {
 	res.status(404).send("404: Page not found");

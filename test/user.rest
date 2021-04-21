@@ -1,21 +1,21 @@
-GET http://localhost:4000/user/4
+GET http://localhost:4000/user/1
 Content-Type: application/json
 
 ### Create
 
-POST http://localhost:4000/user/create?apiKey={{$dotenv API_KEY}}
+POST http://localhost:4000/user/create
 Content-Type: application/json
 
 {
-    "email": "doe@jhon.fr",
-    "password": "test2",
-    "firstname": "jhon2",
-    "lastname": "doe2"
+    "email": "jhon@doe.fr",
+    "password": "test18",
+    "firstname": "jhon",
+    "lastname": "doe"
 }
 
 ### Update
 
-PUT http://localhost:4000/user/update/3?apiKey={{$dotenv API_KEY}}
+PUT http://localhost:4000/user/update/1
 Content-Type: application/json
 
 {
@@ -27,11 +27,11 @@ Content-Type: application/json
 
 ### Delete
 
-DELETE http://localhost:4000/user/delete?apiKey={{$dotenv API_KEY}}
+DELETE http://localhost:4000/user/delete
 Content-Type: application/json
 
 {
-    "id": 3
+    "id": 1
 }
 
 ###

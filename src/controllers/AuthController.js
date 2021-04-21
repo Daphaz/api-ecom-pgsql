@@ -18,7 +18,8 @@ exports.login = async (req, res) => {
 
 	if (!user) {
 		return res.status(401).send({
-			status: "false",
+			status: false,
+			type: "email",
 			message: "Email doesn't exists",
 		});
 	}
@@ -28,6 +29,7 @@ exports.login = async (req, res) => {
 	if (!isMatchPassword) {
 		return res.status(401).send({
 			status: false,
+			type: "password",
 			message: "Password doesn't match",
 		});
 	}
@@ -43,7 +45,7 @@ exports.login = async (req, res) => {
 		})
 	);
 
-	return res.status(200).send({
+	return res.send({
 		status: true,
 		message: "You are login",
 	});
@@ -54,6 +56,8 @@ exports.register = async (req, res) => {
 
 	if (!email && !password && !firstname && !lastname) {
 		res.status(400).send({
+			status: false,
+			type: "request",
 			message: "You need to include fields",
 		});
 	}
@@ -66,6 +70,8 @@ exports.register = async (req, res) => {
 
 	if (emailExists) {
 		res.status(401).send({
+			status: false,
+			type: "email",
 			message: "This email as already used",
 		});
 	}
@@ -75,21 +81,28 @@ exports.register = async (req, res) => {
 			if (password.length > PASSWORD_LENGTH) {
 				let passwordHash = await bcrypt.hash(password, 12);
 
-				let newUser = await User.create({
+				await User.create({
 					email,
 					password: passwordHash,
 					firstname,
 					lastname,
 				});
 
-				return res.status(201).send(newUser);
+				return res.status(201).send({
+					status: true,
+					message: "User was successfull created",
+				});
 			}
 			res.status(400).send({
-				message: `This password ${password} is not valid`,
+				status: false,
+				type: "password",
+				message: `Password must be minimum 5 character`,
 			});
 		}
 
 		return res.status(400).send({
+			status: false,
+			type: "email",
 			message: `This email ${email} is not valid`,
 		});
 	} catch (err) {
@@ -121,6 +134,8 @@ exports.isAuth = async (req, res) => {
 	if (!user) {
 		return res.status(401).send();
 	}
+
+	console.log(user);
 
 	const { email, firstname, lastname } = user.dataValues;
 

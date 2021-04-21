@@ -1,5 +1,9 @@
 const db = require("../models");
+const emailIsValid = require("email-validator");
+const bcrypt = require("bcryptjs");
 const User = db.rest.models.user;
+
+const PASSWORD_LENGTH = 5;
 
 exports.getUser = async (req, res) => {
 	const { id } = req.params;
@@ -35,20 +39,33 @@ exports.createUser = async (req, res) => {
 	});
 
 	if (emailExists) {
-		res.status(400).send({
+		res.status(401).send({
 			message: "This email as already used",
 		});
 	}
 
 	try {
-		let newUser = await User.create({
-			email,
-			password,
-			firstname,
-			lastname,
-		});
+		if (emailIsValid.validate(email)) {
+			if (password.length > PASSWORD_LENGTH) {
+				let passwordHash = bcrypt.hash(password, 12);
 
-		return res.status(201).send(newUser);
+				let newUser = await User.create({
+					email,
+					password: passwordHash,
+					firstname,
+					lastname,
+				});
+
+				return res.status(201).send(newUser);
+			}
+			res.status(400).send({
+				message: `This password ${password} is not valid`,
+			});
+		}
+
+		return res.status(400).send({
+			message: `This email ${email} is not valid`,
+		});
 	} catch (err) {
 		res.status(500).send({
 			message: `Error: ${err.message}`,
@@ -76,7 +93,13 @@ exports.updateUser = async (req, res) => {
 
 	try {
 		if (email) {
-			user.email = email;
+			if (emailIsValid.validate(email)) {
+				user.email = email;
+			} else {
+				return res.status(400).send({
+					message: "Email is inValid",
+				});
+			}
 		}
 		if (password) {
 			user.password = password;
@@ -90,7 +113,7 @@ exports.updateUser = async (req, res) => {
 
 		user.save();
 
-		return res.status(200).send({
+		return res.status(204).send({
 			message: `User ${id} was updated !`,
 		});
 	} catch (err) {
@@ -98,8 +121,6 @@ exports.updateUser = async (req, res) => {
 			message: `Error: ${err.message}`,
 		});
 	}
-
-	return res.status(200).send(user);
 };
 
 exports.deleteUser = async (req, res) => {

@@ -16,11 +16,21 @@ exports.getUser = async (req, res) => {
 
 	if (!user) {
 		return res.status(400).send({
+			status: false,
+			type: "request",
 			message: `User not found with the id ${id}`,
 		});
 	}
 
-	return res.status(200).send(user);
+	return res.send({
+		status: true,
+		data: {
+			id: user.id,
+			email: user.email,
+			firstname: user.firstname,
+			lastname: user.lastname,
+		},
+	});
 };
 
 exports.createUser = async (req, res) => {
@@ -28,6 +38,8 @@ exports.createUser = async (req, res) => {
 
 	if (!email && !password && !firstname && !lastname) {
 		res.status(400).send({
+			status: false,
+			type: "request",
 			message: "You need to include fields",
 		});
 	}
@@ -40,6 +52,8 @@ exports.createUser = async (req, res) => {
 
 	if (emailExists) {
 		res.status(401).send({
+			status: false,
+			type: "email",
 			message: "This email as already used",
 		});
 	}
@@ -47,7 +61,7 @@ exports.createUser = async (req, res) => {
 	try {
 		if (emailIsValid.validate(email)) {
 			if (password.length > PASSWORD_LENGTH) {
-				let passwordHash = bcrypt.hash(password, 12);
+				let passwordHash = await bcrypt.hash(password, 12);
 
 				let newUser = await User.create({
 					email,
@@ -59,11 +73,15 @@ exports.createUser = async (req, res) => {
 				return res.status(201).send(newUser);
 			}
 			res.status(400).send({
+				status: false,
+				type: "password",
 				message: `This password ${password} is not valid`,
 			});
 		}
 
 		return res.status(400).send({
+			status: false,
+			type: "email",
 			message: `This email ${email} is not valid`,
 		});
 	} catch (err) {
@@ -72,7 +90,10 @@ exports.createUser = async (req, res) => {
 		});
 	}
 
-	return res.status(200).send(user);
+	return res.status(201).send({
+		status: true,
+		message: "User sucessfull created",
+	});
 };
 
 exports.updateUser = async (req, res) => {
@@ -87,6 +108,8 @@ exports.updateUser = async (req, res) => {
 
 	if (!user) {
 		res.status(400).send({
+			status: false,
+			type: "request",
 			message: "User doesn't exists",
 		});
 	}
@@ -97,6 +120,8 @@ exports.updateUser = async (req, res) => {
 				user.email = email;
 			} else {
 				return res.status(400).send({
+					status: false,
+					type: "email",
 					message: "Email is inValid",
 				});
 			}
@@ -113,7 +138,8 @@ exports.updateUser = async (req, res) => {
 
 		user.save();
 
-		return res.status(204).send({
+		return res.status(200).send({
+			status: true,
 			message: `User ${id} was updated !`,
 		});
 	} catch (err) {
@@ -128,6 +154,8 @@ exports.deleteUser = async (req, res) => {
 
 	if (!id) {
 		res.status(400).send({
+			status: false,
+			type: "request",
 			message: "User not found",
 		});
 	}
@@ -140,6 +168,8 @@ exports.deleteUser = async (req, res) => {
 
 	if (!user) {
 		res.status(400).send({
+			status: false,
+			type: "request",
 			message: "User doesn't exists",
 		});
 	}
@@ -147,7 +177,8 @@ exports.deleteUser = async (req, res) => {
 	try {
 		await user.destroy();
 
-		return res.status(200).send({
+		return res.send({
+			status: true,
 			message: `User ${id} has been deleted !`,
 		});
 	} catch (err) {
@@ -155,6 +186,4 @@ exports.deleteUser = async (req, res) => {
 			message: `Error: ${err.message}`,
 		});
 	}
-
-	return res.status(200).send(user);
 };

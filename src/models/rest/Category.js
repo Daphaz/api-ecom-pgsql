@@ -3,9 +3,9 @@ const category = (sequelize, DataType) => {
 		"category",
 		{
 			id: {
-				type: DataType.INTEGER,
+				type: DataType.UUID,
+				defaultValue: DataType.UUIDV4,
 				primaryKey: true,
-				autoIncrement: true,
 			},
 			name: {
 				type: DataType.STRING(255),
@@ -18,16 +18,17 @@ const category = (sequelize, DataType) => {
 		}
 	);
 
-	Category.sync();
-
 	Category.associate = (models) => {
 		Category.hasMany(models.product, {
-			foreignKey: {
-				name: "product_id",
-				allowNull: true,
+			onDelete: "cascade",
+			foriegnKey: {
+				type: DataType.UUID,
+				allowNull: false,
 			},
 		});
 	};
+
+	Category.sync({ alter: true });
 
 	return Category;
 };

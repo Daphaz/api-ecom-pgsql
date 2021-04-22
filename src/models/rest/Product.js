@@ -3,9 +3,12 @@ const product = (sequelize, DataType) => {
 		"product",
 		{
 			id: {
-				type: DataType.INTEGER,
+				type: DataType.UUID,
+				defaultValue: DataType.UUIDV4,
 				primaryKey: true,
-				autoIncrement: true,
+			},
+			categoryId: {
+				type: DataType.UUID,
 			},
 			name: {
 				type: DataType.STRING(255),
@@ -33,6 +36,7 @@ const product = (sequelize, DataType) => {
 			},
 			is_best: {
 				type: DataType.SMALLINT,
+				defaultValue: 0,
 				allowNull: false,
 			},
 		},
@@ -42,15 +46,11 @@ const product = (sequelize, DataType) => {
 		}
 	);
 
-	Product.sync();
-
 	Product.associate = (models) => {
-		Product.belongsTo(models.category, {
-			onDelete: "cascade",
-			as: "category_id",
-			constraint: false,
-		});
+		Product.belongsTo(models.category);
 	};
+
+	Product.sync({ alter: true });
 
 	return Product;
 };

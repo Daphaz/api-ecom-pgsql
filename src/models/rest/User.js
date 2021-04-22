@@ -9,6 +9,7 @@ const user = (sequelize, DataType) => {
 			},
 			email: {
 				type: DataType.STRING(180),
+				allowNull: false,
 				unique: true,
 			},
 			roles: {
@@ -16,12 +17,15 @@ const user = (sequelize, DataType) => {
 			},
 			password: {
 				type: DataType.STRING(255),
+				allowNull: false,
 			},
 			firstname: {
 				type: DataType.STRING(180),
+				allowNull: false,
 			},
 			lastname: {
 				type: DataType.STRING(180),
+				allowNull: false,
 			},
 		},
 		{

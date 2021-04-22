@@ -31,6 +31,7 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use("/user", verifyToken, isAdmin, routes.user);
 app.use("/auth", routes.auth);
 app.use("/category", routes.category);
+app.use("/product", routes.product);
 
 app.use((req, res) => {
 	res.status(404).send("404: Page not found");

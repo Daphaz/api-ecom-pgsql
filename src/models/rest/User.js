@@ -3,9 +3,9 @@ const user = (sequelize, DataType) => {
 		"user",
 		{
 			id: {
-				type: DataType.INTEGER,
+				type: DataType.UUID,
+				defaultValue: DataType.UUIDV4,
 				primaryKey: true,
-				autoIncrement: true,
 			},
 			email: {
 				type: DataType.STRING(180),
@@ -14,6 +14,7 @@ const user = (sequelize, DataType) => {
 			},
 			roles: {
 				type: DataType.TEXT,
+				defaultValue: "user",
 			},
 			password: {
 				type: DataType.STRING(255),
@@ -34,7 +35,8 @@ const user = (sequelize, DataType) => {
 		}
 	);
 
-	User.sync();
+	User.sync({ alter: true });
+
 	return User;
 };
 

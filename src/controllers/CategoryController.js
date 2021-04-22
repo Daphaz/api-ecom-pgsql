@@ -1,21 +1,24 @@
 const db = require("../models");
 const Category = db.rest.models.category;
+const Product = db.rest.models.product;
 
 exports.getCategories = async (req, res) => {
 	try {
 		const categories = await Category.findAll({ raw: true });
 
-		if (!categories) {
-			return res.send({
-				status: false,
-				message: "Not found categories",
+		console.log(categories);
+
+		if (categories.length > 0) {
+			res.send({
+				status: true,
+				message: "found all categories",
+				data: categories,
 			});
 		}
 
-		res.send({
-			status: true,
-			message: "found all categories",
-			data: categories,
+		return res.send({
+			status: false,
+			message: "Not found categories",
 		});
 	} catch (error) {
 		res.status(500).send({
@@ -51,10 +54,7 @@ exports.createCategory = async (req, res) => {
 			});
 		}
 
-		const category = await Category.create({
-			name,
-			include: [db.product],
-		});
+		const category = await Category.create({ name });
 
 		res.send({
 			status: true,

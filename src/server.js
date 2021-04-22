@@ -7,6 +7,7 @@ import fs from "fs";
 import path from "path";
 import { specs, swaggerUI } from "./docs";
 import routes from "./routes";
+import { isAdmin, verifyToken } from "./utils";
 
 const app = express();
 
@@ -27,7 +28,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
-app.use("/user", routes.user);
+app.use("/user", verifyToken, isAdmin, routes.user);
 app.use("/auth", routes.auth);
 
 app.use((req, res) => {

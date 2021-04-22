@@ -11,6 +11,7 @@ exports.login = async (req, res) => {
 	const { email, password } = req.body;
 
 	const user = await User.findOne({
+		raw: true,
 		where: {
 			email,
 		},
@@ -34,7 +35,7 @@ exports.login = async (req, res) => {
 		});
 	}
 
-	const token = await createToken(user.dataValues);
+	const token = await createToken(user.id);
 	const dateExpire = Date.now() + 10 * 60 * 1000;
 
 	res.setHeader(
@@ -63,6 +64,7 @@ exports.register = async (req, res) => {
 	}
 
 	let emailExists = await User.findOne({
+		raw: true,
 		where: {
 			email,
 		},
@@ -116,32 +118,45 @@ exports.isAuth = async (req, res) => {
 	const token = req.headers.authorization;
 
 	if (!token) {
-		return res.status(401);
+		return res.status(401).send({
+			status: false,
+			message: "We need token for authentification",
+		});
 	}
 
 	const tokenIsValid = await decodeToken(token);
 
-	if (tokenIsValid === "jwt expired") {
-		return res.status(401).send();
+	console.log(tokenIsValid);
+
+	if (tokenIsValid === "jwt expired" || tokenIsValid === "invalid token") {
+		return res.status(401).send({
+			status: false,
+			message: "jwt was expired or not Valid",
+		});
 	}
 
 	const user = await User.findOne({
+		raw: true,
 		where: {
 			id: tokenIsValid,
 		},
 	});
 
 	if (!user) {
-		return res.status(401).send();
+		return res.status(401).send({
+			status: false,
+			message: "User not found",
+		});
 	}
 
-	console.log(user);
-
-	const { email, firstname, lastname } = user.dataValues;
+	const { email, firstname, lastname } = user;
 
 	return res.send({
-		email,
-		firstname,
-		lastname,
+		status: true,
+		data: {
+			email,
+			firstname,
+			lastname,
+		},
 	});
 };

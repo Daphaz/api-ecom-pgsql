@@ -9,6 +9,7 @@ exports.getUser = async (req, res) => {
 	const { id } = req.params;
 
 	const user = await User.findOne({
+		raw: true,
 		where: {
 			id,
 		},
@@ -45,6 +46,7 @@ exports.createUser = async (req, res) => {
 	}
 
 	let emailExists = await User.findOne({
+		raw: true,
 		where: {
 			email,
 		},
@@ -63,14 +65,17 @@ exports.createUser = async (req, res) => {
 			if (password.length > PASSWORD_LENGTH) {
 				let passwordHash = await bcrypt.hash(password, 12);
 
-				let newUser = await User.create({
+				await User.create({
 					email,
 					password: passwordHash,
 					firstname,
 					lastname,
 				});
 
-				return res.status(201).send(newUser);
+				return res.status(201).send({
+					status: true,
+					message: "New User was created !",
+				});
 			}
 			res.status(400).send({
 				status: false,

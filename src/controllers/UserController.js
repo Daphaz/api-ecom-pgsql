@@ -8,30 +8,28 @@ const PASSWORD_LENGTH = 5;
 exports.getUser = async (req, res) => {
 	const { id } = req.params;
 
-	const user = await User.findOne({
-		raw: true,
-		where: {
-			id,
-		},
-	});
+	try {
+		const user = await User.findOne({
+			raw: true,
+			where: {
+				id,
+			},
+		});
 
-	if (!user) {
-		return res.status(400).send({
-			status: false,
-			type: "request",
-			message: `User not found with the id ${id}`,
+		return res.send({
+			status: true,
+			data: {
+				id: user.id,
+				email: user.email,
+				firstname: user.firstname,
+				lastname: user.lastname,
+			},
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
 		});
 	}
-
-	return res.send({
-		status: true,
-		data: {
-			id: user.id,
-			email: user.email,
-			firstname: user.firstname,
-			lastname: user.lastname,
-		},
-	});
 };
 
 exports.createUser = async (req, res) => {
@@ -143,7 +141,7 @@ exports.updateUser = async (req, res) => {
 
 		user.save();
 
-		return res.status(200).send({
+		return res.send({
 			status: true,
 			message: `User ${id} was updated !`,
 		});

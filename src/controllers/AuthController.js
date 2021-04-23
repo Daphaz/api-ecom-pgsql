@@ -125,9 +125,8 @@ exports.isAuth = async (req, res) => {
 		});
 	}
 
-	const tokenIsValid = await decodeToken(token);
-
-	console.log(tokenIsValid);
+	const splitToken = token.split("Bearer ");
+	const tokenIsValid = await decodeToken(splitToken[1]);
 
 	if (tokenIsValid === "jwt expired" || tokenIsValid === "invalid token") {
 		return res.status(401).send({
@@ -136,30 +135,36 @@ exports.isAuth = async (req, res) => {
 		});
 	}
 
-	const user = await User.findOne({
-		raw: true,
-		where: {
-			id: tokenIsValid,
-		},
-	});
+	try {
+		const user = await User.findOne({
+			raw: true,
+			where: {
+				id: tokenIsValid,
+			},
+		});
 
-	if (!user) {
-		return res.status(401).send({
-			status: false,
-			message: "User not found",
+		if (!user) {
+			return res.status(401).send({
+				status: false,
+				message: "User not found",
+			});
+		}
+
+		const { email, firstname, lastname } = user;
+
+		return res.send({
+			status: true,
+			data: {
+				email,
+				firstname,
+				lastname,
+			},
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
 		});
 	}
-
-	const { email, firstname, lastname } = user;
-
-	return res.send({
-		status: true,
-		data: {
-			email,
-			firstname,
-			lastname,
-		},
-	});
 };
 
 exports.modifyPassword = async (req, res) => {

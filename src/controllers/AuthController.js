@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const cookie = require("cookie");
 const emailIsValid = require("email-validator");
 const User = db.rest.models.user;
+const ResetPassword = db.rest.models.resetPassword;
 
 const PASSWORD_LENGTH = 5;
 
@@ -159,4 +160,88 @@ exports.isAuth = async (req, res) => {
 			lastname,
 		},
 	});
+};
+
+exports.modifyPassword = async (req, res) => {
+	const { password, userId } = req.body;
+	const { idToken } = req.params;
+
+	if (!password || !userId) {
+		return res.status(400).send({
+			status: false,
+			type: "request",
+			message: "Missing parameters",
+		});
+	}
+
+	if (password.length < PASSWORD_LENGTH) {
+		return res.status(400).send({
+			status: false,
+			type: "password",
+			message: `Password ${password} is not valid`,
+		});
+	}
+
+	try {
+		const resetPassword = await ResetPassword.findOne({
+			where: {
+				id: idToken,
+			},
+		});
+
+		if (!resetPassword) {
+			return res.status(401).send({
+				status: false,
+				message: "Not found token",
+			});
+		}
+
+		const timeIsValid =
+			Date.now() >
+			Date.parse(resetPassword.dataValues.updatedAt) + 60 * 60 * 1000
+				? false
+				: true;
+
+		if (!timeIsValid) {
+			await resetPassword.destroy();
+
+			return res.status(401).send({
+				status: false,
+				type: "token",
+				message: "token has expired",
+			});
+		}
+
+		if (resetPassword.dataValues.status !== 0) {
+			await resetPassword.destroy();
+
+			return res.status(400).send({
+				status: false,
+				type: "token",
+				message: "token already used",
+			});
+		}
+
+		const user = await User.findByPk(userId);
+
+		resetPassword.status = 1;
+		resetPassword.token = 0;
+
+		resetPassword.save();
+
+		const hashPassword = await bcrypt.hash(password, 12);
+
+		user.password = hashPassword;
+
+		user.save();
+
+		res.send({
+			status: true,
+			message: "User password is updated",
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
 };

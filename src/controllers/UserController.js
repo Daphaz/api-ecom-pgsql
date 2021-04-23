@@ -165,21 +165,13 @@ exports.deleteUser = async (req, res) => {
 		});
 	}
 
-	const user = await User.findOne({
-		where: {
-			id,
-		},
-	});
-
-	if (!user) {
-		res.status(400).send({
-			status: false,
-			type: "request",
-			message: "User doesn't exists",
-		});
-	}
-
 	try {
+		const user = await User.findOne({
+			where: {
+				id,
+			},
+		});
+
 		await user.destroy();
 
 		return res.send({

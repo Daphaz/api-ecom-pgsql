@@ -88,3 +88,4 @@ sequelize |  A node ORM tool
 swagger-jsdoc | Read JSDoc-annotated source code
 swagger-ui-express | Generated API docs
 nodemon | Automatically restarting the node app when file changes
+rand-token | Generate randoms tokens

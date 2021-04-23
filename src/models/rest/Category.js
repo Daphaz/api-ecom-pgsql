@@ -18,17 +18,7 @@ const category = (sequelize, DataType) => {
 		}
 	);
 
-	Category.associate = (models) => {
-		Category.hasMany(models.product, {
-			onDelete: "cascade",
-			foriegnKey: {
-				type: DataType.UUID,
-				allowNull: false,
-			},
-		});
-	};
-
-	Category.sync({ alter: true });
+	Category.sync();
 
 	return Category;
 };

@@ -14,6 +14,7 @@ const user = (sequelize, DataType) => {
 			},
 			roles: {
 				type: DataType.TEXT,
+				allowNull: false,
 				defaultValue: "user",
 			},
 			password: {
@@ -35,7 +36,7 @@ const user = (sequelize, DataType) => {
 		}
 	);
 
-	User.sync({ alter: true });
+	User.sync();
 
 	return User;
 };

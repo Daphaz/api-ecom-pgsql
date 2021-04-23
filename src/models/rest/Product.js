@@ -34,7 +34,7 @@ const product = (sequelize, DataType) => {
 				type: DataType.DOUBLE,
 				allowNull: false,
 			},
-			is_best: {
+			isBest: {
 				type: DataType.SMALLINT,
 				defaultValue: 0,
 				allowNull: false,
@@ -46,11 +46,7 @@ const product = (sequelize, DataType) => {
 		}
 	);
 
-	Product.associate = (models) => {
-		Product.belongsTo(models.category);
-	};
-
-	Product.sync({ alter: true });
+	Product.sync();
 
 	return Product;
 };

@@ -64,18 +64,22 @@ exports.setCategoryProduct = async (req, res) => {
 	const { id } = req.params;
 
 	try {
+		const product = await Product.findOne({
+			where: {
+				id,
+			},
+		});
+
 		const category = await Category.findOne({
+			raw: true,
 			where: {
 				id: categoryId,
 			},
 		});
 
-		const product = await Product.findOne({
-			where: {
-				id,
-			},
-			include: [{ model: category }],
-		});
+		product.categoryId = category.id;
+
+		product.save();
 
 		res.send({
 			status: true,
@@ -89,6 +93,109 @@ exports.setCategoryProduct = async (req, res) => {
 	}
 };
 
-exports.updateProduct = async (req, res) => {};
+exports.setIsBest = async (req, res) => {
+	const { id } = req.params;
 
-exports.deleteProduct = async (req, res) => {};
+	try {
+		const product = await Product.findOne({
+			where: {
+				id,
+			},
+		});
+
+		product.isBest = product.isBest === 0 ? 1 : 0;
+
+		product.save();
+
+		res.send({
+			status: true,
+			message: `Product ${id} marked isBest`,
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
+};
+
+exports.updateProduct = async (req, res) => {
+	const { name, slug, illustration, subtitle, description, price } = req.body;
+	const { id } = req.params;
+
+	if (!name || !slug || !illustration || !subtitle || !description || !price) {
+		return res.status(400).send({
+			status: false,
+			type: "request",
+			message: "We need some parameter",
+		});
+	}
+
+	try {
+		const product = await Product.findOne({
+			where: {
+				id,
+			},
+		});
+
+		if (name) {
+			product.name = name;
+		}
+		if (slug) {
+			product.slug = slug;
+		}
+		if (illustration) {
+			product.illustration = illustration;
+		}
+		if (subtitle) {
+			product.subtitle = subtitle;
+		}
+		if (description) {
+			product.description = description;
+		}
+		if (price) {
+			product.price = price;
+		}
+
+		product.save();
+
+		res.status(201).send({
+			status: true,
+			message: `Product ${id} was updated`,
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
+};
+
+exports.deleteProduct = async (req, res) => {
+	const { id } = req.body;
+
+	if (!id) {
+		res.status(400).send({
+			status: false,
+			type: "request",
+			message: "Product not found",
+		});
+	}
+
+	try {
+		const product = await Product.findOne({
+			where: {
+				id,
+			},
+		});
+
+		await product.destroy();
+
+		return res.send({
+			status: true,
+			message: `Product ${id} has been deleted !`,
+		});
+	} catch (err) {
+		res.status(500).send({
+			message: `Error: ${err.message}`,
+		});
+	}
+};

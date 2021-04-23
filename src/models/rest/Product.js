@@ -27,7 +27,7 @@ const product = (sequelize, DataType) => {
 				allowNull: false,
 			},
 			description: {
-				type: DataType.TEXT("long"),
+				type: DataType.TEXT,
 				allowNull: false,
 			},
 			price: {

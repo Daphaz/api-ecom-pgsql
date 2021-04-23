@@ -14,7 +14,9 @@ async function verifyToken(req, res, next) {
 	}
 
 	try {
-		const verifyToken = await decodeToken(token);
+		const splitToken = token.split("Bearer ");
+
+		const verifyToken = await decodeToken(splitToken[1]);
 
 		if (verifyToken === "jwt expired" || verifyToken === "invalid token") {
 			return res.status(401).send({

@@ -5,8 +5,6 @@ exports.getCategories = async (req, res) => {
 	try {
 		const categories = await Category.findAll({ raw: true });
 
-		console.log(categories);
-
 		if (categories.length > 0) {
 			res.send({
 				status: true,

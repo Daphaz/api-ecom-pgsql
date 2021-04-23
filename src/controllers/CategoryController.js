@@ -1,6 +1,5 @@
 const db = require("../models");
 const Category = db.rest.models.category;
-const Product = db.rest.models.product;
 
 exports.getCategories = async (req, res) => {
 	try {
@@ -121,21 +120,13 @@ exports.deleteCategory = async (req, res) => {
 		});
 	}
 
-	const category = await Category.findOne({
-		where: {
-			id,
-		},
-	});
-
-	if (!category) {
-		res.status(400).send({
-			status: false,
-			type: "request",
-			message: "Category doesn't exists",
-		});
-	}
-
 	try {
+		const category = await Category.findOne({
+			where: {
+				id,
+			},
+		});
+
 		await category.destroy();
 
 		return res.send({

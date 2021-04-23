@@ -4,7 +4,7 @@ module.exports = {
 		info: {
 			title: "Library API",
 			version: "1.0.0",
-			description: "A simple Express / Postgresql API for e-commerce",
+			description: "A simple Express / Postgresql API for e-commerce website",
 		},
 		servers: [
 			{
@@ -12,5 +12,5 @@ module.exports = {
 			},
 		],
 	},
-	apis: ["./src/routes/*.js"],
+	apis: ["./src/docs/swagger/*.js"],
 };

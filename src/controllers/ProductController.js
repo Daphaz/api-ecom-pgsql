@@ -1,4 +1,5 @@
 const db = require("../models");
+const { slugify } = require("../helpers");
 const Product = db.rest.models.product;
 const Category = db.rest.models.category;
 
@@ -27,9 +28,19 @@ exports.getProducts = async (req, res) => {
 };
 
 exports.createProduct = async (req, res) => {
-	const { name, slug, illustration, subtitle, description, price } = req.body;
+	const { name, slug, subtitle, description, price } = req.body;
 
-	if (!name && !slug && !illustration && !subtitle && !description && !price) {
+	const image = req.file.filename;
+
+	if (!image) {
+		return res.status(400).send({
+			status: false,
+			type: "image",
+			message: "check your input images",
+		});
+	}
+
+	if (!name && !slug && !subtitle && !description && !price) {
 		return res.status(400).send({
 			status: false,
 			type: "request",
@@ -38,10 +49,11 @@ exports.createProduct = async (req, res) => {
 	}
 
 	try {
+		const newSlug = slugify(slug);
 		const product = await Product.create({
 			name,
-			slug,
-			illustration,
+			slug: newSlug,
+			illustration: image,
 			subtitle,
 			description,
 			price,

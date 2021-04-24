@@ -68,7 +68,7 @@
 
 /**
  * @swagger
- * /auth/update/{id}:
+ * /category/update/{id}:
  *  put:
  *    security:
  *      - AdminAuth: []
@@ -91,7 +91,7 @@
  *            $ref: '#/components/schemas/Category'
  *    responses:
  *     200:
- *      description: User was successfull created
+ *      description: User was successfull updated
  *      content:
  *        application/json:
  *          schema:
@@ -119,7 +119,7 @@
  *    security:
  *      - AdminAuth: []
  *    summary: Delete category by id
- *    description: only user admin can update category
+ *    description: only user admin can delete category
  *    tags: [Categories]
  *    requestBody:
  *      required: true

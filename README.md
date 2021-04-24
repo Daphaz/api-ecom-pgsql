@@ -77,7 +77,7 @@ Package npm | for what ?
 ------------ | -------------
 bcryptjs | Hashes passwords
 cookie | Cookie parser and serializer
-cors | Content in the second column
+cors | To enable cors with option
 dotenv | For loads environment variables from a .env file
 email-validator | Validate an e-mail address
 esm | Babel-less, bundle-less ECMAScript module loader

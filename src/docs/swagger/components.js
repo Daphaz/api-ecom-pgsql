@@ -95,6 +95,68 @@
  *      name:
  *       type: string
  *       description: the name of category
+ *    Address:
+ *     type: object
+ *     required:
+ *        - userId
+ *        - name
+ *        - firstname
+ *        - lastname
+ *        - address
+ *        - postal
+ *        - city
+ *        - country
+ *        - phone
+ *     properties:
+ *      userId:
+ *       type: string
+ *       format: uuid
+ *       description: the id of user
+ *      name:
+ *       type: string
+ *       description: the name of address
+ *      firstname:
+ *       type: string
+ *       description: firstname of user
+ *      lastname:
+ *       type: string
+ *       description: lastname of user
+ *      company:
+ *       type: string
+ *       description: company of this address
+ *      address:
+ *       type: string
+ *       description: address of user
+ *      postal:
+ *       type: string
+ *       description: postal of this address
+ *      city:
+ *       type: string
+ *       description: city of this address
+ *      country:
+ *       type: string
+ *       description: country of this address
+ *      phone:
+ *       type: string
+ *       description: phone of user
+ *    Carrier:
+ *     type: object
+ *     required:
+ *        - name
+ *        - description
+ *        - price
+ *     properties:
+ *      name:
+ *       type: string
+ *       description: the name of carrier
+ *      description:
+ *       type: string
+ *       format: text
+ *       description: description of carrier
+ *      price:
+ *       type: number
+ *       format: double
+ *       description: price of carrier
  *    Sucess_200:
  *     type: object
  *     properties:

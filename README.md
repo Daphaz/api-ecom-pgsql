@@ -67,6 +67,8 @@ npm run dev
 
 - You can modify this route in the server.js document
 
+>We have a **access.log** file for every request
+
 ---
 
 ## Dependencies
@@ -89,3 +91,18 @@ swagger-jsdoc | Read JSDoc-annotated source code
 swagger-ui-express | Generated API docs
 nodemon | Automatically restarting the node app when file changes
 rand-token | Generate randoms tokens
+multer | Storage image
+
+---
+
+## Version
+>this project will evolve with time and I intend to use it to make the front end with nextjs
+
+### v1.0.0
+- Users
+- Authentification
+- ResetPassword
+- Products
+- Categorires
+- Addresses
+- Carriers

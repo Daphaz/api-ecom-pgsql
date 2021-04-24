@@ -5,7 +5,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import fs from "fs";
 import path from "path";
-import { specs, swaggerUI } from "./docs";
+import { specs, swaggerUI, optionsSwagger } from "./docs";
 import routes from "./routes";
 import { isAdmin, verifyToken } from "./utils";
 
@@ -26,8 +26,9 @@ app.use(helmet());
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+app.use("/static", express.static(path.resolve("uploads")));
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, optionsSwagger));
 app.use("/user", verifyToken, isAdmin, routes.user);
 app.use("/auth", routes.auth);
 app.use("/category", routes.category);

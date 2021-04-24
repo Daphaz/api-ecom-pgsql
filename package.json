@@ -1,6 +1,6 @@
 {
   "name": "api-pgsql",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "boilerplate api with postgresql",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,9 @@
     "helmet": "^4.5.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
+    "multer": "^1.4.2",
     "pg": "^8.6.0",
+    "rand-token": "^1.0.1",
     "sequelize": "^5.21.7",
     "swagger-jsdoc": "^6.0.0",
     "swagger-ui-express": "^4.1.6"

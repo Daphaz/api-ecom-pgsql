@@ -1,9 +1,9 @@
 require("dotenv/config");
 const jwt = require("jsonwebtoken");
 
-export async function createToken(user) {
+export async function createToken(id) {
 	try {
-		return jwt.sign({ id: user.id }, process.env.JWT_PAYLOAD, {
+		return jwt.sign({ id }, process.env.JWT_PAYLOAD, {
 			expiresIn: 600,
 		});
 	} catch (error) {

@@ -5,8 +5,9 @@ import morgan from "morgan";
 import helmet from "helmet";
 import fs from "fs";
 import path from "path";
-import { specs, swaggerUI } from "./docs";
+import { specs, swaggerUI, optionsSwagger } from "./docs";
 import routes from "./routes";
+import { isAdmin, verifyToken } from "./utils";
 
 const app = express();
 
@@ -18,17 +19,23 @@ const accessLogStream = fs.createWriteStream(
 app.use(
 	cors({
 		credentials: true,
-		origin: "http://localhost:3000",
+		origin: process.env.FRONTEND_URL,
 	})
 );
 app.use(helmet());
 app.use(morgan("combined", { stream: accessLogStream }));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+app.use("/static", express.static(path.resolve("uploads")));
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
-app.use("/user", routes.user);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, optionsSwagger));
+app.use("/user", verifyToken, isAdmin, routes.user);
 app.use("/auth", routes.auth);
+app.use("/category", routes.category);
+app.use("/product", routes.product);
+app.use("/reset", routes.resetPassword);
+app.use("/address", verifyToken, routes.address);
+app.use("/carrier", verifyToken, routes.carrier);
 
 app.use((req, res) => {
 	res.status(404).send("404: Page not found");

@@ -3,25 +3,31 @@ const user = (sequelize, DataType) => {
 		"user",
 		{
 			id: {
-				type: DataType.INTEGER,
+				type: DataType.UUID,
+				defaultValue: DataType.UUIDV4,
 				primaryKey: true,
-				autoIncrement: true,
 			},
 			email: {
 				type: DataType.STRING(180),
+				allowNull: false,
 				unique: true,
 			},
 			roles: {
 				type: DataType.TEXT,
+				allowNull: false,
+				defaultValue: "user",
 			},
 			password: {
 				type: DataType.STRING(255),
+				allowNull: false,
 			},
 			firstname: {
 				type: DataType.STRING(180),
+				allowNull: false,
 			},
 			lastname: {
 				type: DataType.STRING(180),
+				allowNull: false,
 			},
 		},
 		{
@@ -31,6 +37,7 @@ const user = (sequelize, DataType) => {
 	);
 
 	User.sync();
+
 	return User;
 };
 

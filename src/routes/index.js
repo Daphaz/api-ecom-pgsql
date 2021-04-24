@@ -3,6 +3,8 @@ import auth from "./auth";
 import category from "./category";
 import product from "./product";
 import resetPassword from "./resetPassword";
+import address from "./address";
+import carrier from "./carrier";
 
 export default {
 	user,
@@ -10,4 +12,6 @@ export default {
 	category,
 	product,
 	resetPassword,
+	address,
+	carrier,
 };

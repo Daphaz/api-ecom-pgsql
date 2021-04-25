@@ -47,7 +47,7 @@
  *    requestBody:
  *      required: true
  *      content:
- *        application/json:
+ *        multipart/form-data:
  *          schema:
  *            $ref: '#/components/schemas/Product'
  *          example: {name: string,slug: string,subtitle: string,description: string,price: number}

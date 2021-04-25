@@ -121,7 +121,8 @@ exports.isAuth = async (req, res) => {
 	if (!token) {
 		return res.status(401).send({
 			status: false,
-			message: "We need token for authentification",
+			type: "jwt",
+			message: "You need token for authentification",
 		});
 	}
 
@@ -151,6 +152,8 @@ exports.isAuth = async (req, res) => {
 		}
 
 		const { email, firstname, lastname } = user;
+
+		req.userId = user.id;
 
 		return res.send({
 			status: true,

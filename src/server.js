@@ -36,6 +36,7 @@ app.use("/product", routes.product);
 app.use("/reset", routes.resetPassword);
 app.use("/address", verifyToken, routes.address);
 app.use("/carrier", verifyToken, routes.carrier);
+app.use("/order", routes.order);
 
 app.use((req, res) => {
 	res.status(404).send("404: Page not found");

@@ -30,6 +30,14 @@ exports.getProducts = async (req, res) => {
 exports.createProduct = async (req, res) => {
 	const { name, slug, subtitle, description, price } = req.body;
 
+	if (!req.file) {
+		return res.status(400).send({
+			status: false,
+			type: "image",
+			message: "check your input images",
+		});
+	}
+
 	const image = req.file.filename;
 
 	if (!image) {

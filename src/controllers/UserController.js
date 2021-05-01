@@ -23,6 +23,7 @@ exports.getUser = async (req, res) => {
 				email: user.email,
 				firstname: user.firstname,
 				lastname: user.lastname,
+				role: user.roles,
 			},
 		});
 	} catch (error) {

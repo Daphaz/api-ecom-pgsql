@@ -1,5 +1,6 @@
 const db = require("../models");
 const Category = db.rest.models.category;
+import { capitalizeFirstLetter } from "../helpers";
 
 exports.getCategories = async (req, res) => {
 	try {
@@ -35,11 +36,13 @@ exports.createCategory = async (req, res) => {
 		});
 	}
 
+	const nameFormat = capitalizeFirstLetter(name);
+
 	try {
 		const categoryExist = await Category.findOne({
 			raw: true,
 			where: {
-				name,
+				name: nameFormat,
 			},
 		});
 
@@ -51,7 +54,7 @@ exports.createCategory = async (req, res) => {
 			});
 		}
 
-		const category = await Category.create({ name });
+		const category = await Category.create({ name: nameFormat });
 
 		res.send({
 			status: true,

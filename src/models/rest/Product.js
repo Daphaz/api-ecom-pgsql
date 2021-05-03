@@ -7,8 +7,8 @@ const product = (sequelize, DataType) => {
 				defaultValue: DataType.UUIDV4,
 				primaryKey: true,
 			},
-			categoryId: {
-				type: DataType.UUID,
+			category: {
+				type: DataType.STRING(255),
 			},
 			name: {
 				type: DataType.STRING(255),

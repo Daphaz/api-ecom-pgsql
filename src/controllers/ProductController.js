@@ -15,7 +15,7 @@ exports.getProducts = async (req, res) => {
 			});
 		}
 
-		return res.status(400).send({
+		return res.send({
 			status: false,
 			type: "request",
 			message: "Don't find any products",
@@ -28,7 +28,18 @@ exports.getProducts = async (req, res) => {
 };
 
 exports.createProduct = async (req, res) => {
-	const { name, slug, subtitle, description, price } = req.body;
+	const {
+		name,
+		slug,
+		subtitle,
+		description,
+		price,
+		featured,
+		category,
+	} = req.body;
+
+	const isBest = featured === true ? 1 : 0;
+	const categoryName = category !== "" ? category : null;
 
 	if (!req.file) {
 		return res.status(400).send({
@@ -43,7 +54,7 @@ exports.createProduct = async (req, res) => {
 	if (!image) {
 		return res.status(400).send({
 			status: false,
-			type: "image",
+			type: "illustration",
 			message: "check your input images",
 		});
 	}
@@ -51,20 +62,31 @@ exports.createProduct = async (req, res) => {
 	if (!name && !slug && !subtitle && !description && !price) {
 		return res.status(400).send({
 			status: false,
-			type: "request",
+			type: "category",
 			message: "We need some parameter",
 		});
 	}
 
+	const newSlug = slugify(slug);
+
+	if (slug !== newSlug) {
+		return res.status(400).send({
+			status: false,
+			type: "slug",
+			message: "the slug don't have space or spécial caracter",
+		});
+	}
+
 	try {
-		const newSlug = slugify(slug);
 		const product = await Product.create({
 			name,
-			slug: newSlug,
+			slug,
 			illustration: image,
 			subtitle,
 			description,
 			price,
+			isBest,
+			category: categoryName,
 		});
 
 		res.status(201).send({

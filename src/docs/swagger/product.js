@@ -42,7 +42,7 @@
  *    security:
  *      - AdminAuth: []
  *    summary: create one product
- *    description: only user admin can create product, for de illustration we need input[type='file'] html with name "illustration" and the form will contain "enctype='multipart/form-data'"
+ *    description: only user admin can create product, for the illustration we need input[type='file'] html with name "illustration" and the form will contain "enctype='multipart/form-data'"
  *    tags: [Products]
  *    requestBody:
  *      required: true

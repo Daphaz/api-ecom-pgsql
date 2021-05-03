@@ -3,9 +3,9 @@ const category = (sequelize, DataType) => {
 		"category",
 		{
 			id: {
-				type: DataType.UUID,
-				defaultValue: DataType.UUIDV4,
+				type: DataType.INTEGER,
 				primaryKey: true,
+				autoIncrement: true,
 			},
 			name: {
 				type: DataType.STRING(255),

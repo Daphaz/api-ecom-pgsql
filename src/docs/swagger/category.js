@@ -79,8 +79,7 @@
  *     - in: path
  *       name: id
  *       schema:
- *        type: string
- *        format: uuid
+ *        type: integer
  *       required: true
  *       description: Category id
  *    requestBody:

@@ -204,7 +204,7 @@ exports.updateProduct = async (req, res) => {
 	} = req.body;
 	const { id } = req.params;
 
-	if (!name || !slug || !illustration || !subtitle || !description || !price) {
+	if (!name || !slug || !subtitle || !description || !price) {
 		return res.status(400).send({
 			status: false,
 			type: "request",
@@ -224,6 +224,10 @@ exports.updateProduct = async (req, res) => {
 		}
 		if (slug) {
 			product.slug = slug;
+		}
+		if (!illustration) {
+			const image = req.file.filename;
+			product.illustration = image;
 		}
 		if (illustration) {
 			product.illustration = illustration;

@@ -138,16 +138,14 @@ exports.isAuth = async (req, res) => {
 			});
 		}
 
-		const { email, firstname, lastname } = user;
+		const { roles } = user;
 
 		req.userId = user.id;
 
 		return res.send({
 			status: true,
 			data: {
-				email,
-				firstname,
-				lastname,
+				roles,
 			},
 		});
 	} catch (error) {

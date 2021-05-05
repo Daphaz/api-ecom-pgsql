@@ -8,7 +8,7 @@
  *  get:
  *    security:
  *      - AdminAuth: []
- *    summary: decode token jwt
+ *    summary: decode token jwt and return roles
  *    description: need Authorisation header with token
  *    tags: [Authentification]
  *    headers:
@@ -17,11 +17,11 @@
  *          type:  string
  *    responses:
  *     200:
- *      description: Object of user
+ *      description: Roles of user
  *      content:
  *        application/json:
  *          schema:
- *            example: {status: boolean, data: {email: string,firstname: string,lastname: string}}
+ *            example: {status: boolean, data: {roles: string}}
  *     401:
  *      description: user not found or authentification fail
  *      content:

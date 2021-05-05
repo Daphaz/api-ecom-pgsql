@@ -3,6 +3,37 @@ const { slugify } = require("../helpers");
 const Product = db.rest.models.product;
 const Category = db.rest.models.category;
 
+exports.getProductById = async (req, res) => {
+	const { id } = req.params;
+
+	console.log(id);
+
+	try {
+		const product = await Product.findOne({
+			where: {
+				id,
+			},
+		});
+
+		if (product) {
+			return res.send({
+				status: true,
+				message: "found product",
+				data: product,
+			});
+		}
+
+		return res.send({
+			status: false,
+			message: "Not found product",
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
+};
+
 exports.getProducts = async (req, res) => {
 	try {
 		const products = await Product.findAll({ raw: true });
@@ -38,7 +69,7 @@ exports.createProduct = async (req, res) => {
 		category,
 	} = req.body;
 
-	const isBest = featured === true ? 1 : 0;
+	const isBest = featured === "true" ? 1 : 0;
 	const categoryName = category !== "" ? category : null;
 
 	if (!req.file) {
@@ -161,7 +192,16 @@ exports.setIsBest = async (req, res) => {
 };
 
 exports.updateProduct = async (req, res) => {
-	const { name, slug, illustration, subtitle, description, price } = req.body;
+	const {
+		name,
+		slug,
+		illustration,
+		subtitle,
+		description,
+		price,
+		featured,
+		category,
+	} = req.body;
 	const { id } = req.params;
 
 	if (!name || !slug || !illustration || !subtitle || !description || !price) {
@@ -196,6 +236,14 @@ exports.updateProduct = async (req, res) => {
 		}
 		if (price) {
 			product.price = price;
+		}
+		if (featured) {
+			const isBest = featured === "true" ? 1 : 0;
+			product.isBest = isBest;
+		}
+		if (category) {
+			const categoryName = category !== "" ? category : null;
+			product.category = categoryName;
 		}
 
 		product.save();

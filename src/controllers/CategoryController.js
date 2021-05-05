@@ -2,6 +2,37 @@ const db = require("../models");
 const Category = db.rest.models.category;
 import { capitalizeFirstLetter } from "../helpers";
 
+exports.getCategoryById = async (req, res) => {
+	const { id } = req.params;
+
+	console.log(id);
+
+	try {
+		const category = await Category.findOne({
+			where: {
+				id,
+			},
+		});
+
+		if (category) {
+			res.send({
+				status: true,
+				message: "found category",
+				data: category,
+			});
+		}
+
+		return res.send({
+			status: false,
+			message: "Not found category",
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
+};
+
 exports.getCategories = async (req, res) => {
 	try {
 		const categories = await Category.findAll({ raw: true });
@@ -95,7 +126,9 @@ exports.updateCategory = async (req, res) => {
 			});
 		}
 
-		category.name = name;
+		const nameFormat = capitalizeFirstLetter(name);
+
+		category.name = nameFormat;
 
 		category.save();
 

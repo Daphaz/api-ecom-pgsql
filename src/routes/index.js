@@ -6,6 +6,7 @@ import resetPassword from "./resetPassword";
 import address from "./address";
 import carrier from "./carrier";
 import order from "./order";
+import carousel from "./carousel";
 
 export default {
 	user,
@@ -16,4 +17,5 @@ export default {
 	address,
 	carrier,
 	order,
+	carousel,
 };

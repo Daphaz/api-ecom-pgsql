@@ -3,9 +3,9 @@ const carrier = (sequelize, DataType) => {
 		"carrier",
 		{
 			id: {
-				type: DataType.UUID,
-				defaultValue: DataType.UUIDV4,
+				type: DataType.INTEGER,
 				primaryKey: true,
+				autoIncrement: true,
 			},
 			name: {
 				type: DataType.STRING(255),

@@ -5,26 +5,41 @@ const User = db.rest.models.user;
 
 const PASSWORD_LENGTH = 5;
 
+exports.getAllUser = async (req, res) => {
+	try {
+		const users = await User.findAll({
+			raw: true,
+			attributes: { exclude: ["password"] },
+		});
+
+		return res.send({
+			status: true,
+			data: users,
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
+};
+
 exports.getUser = async (req, res) => {
 	const { id } = req.params;
 
 	try {
 		const user = await User.findOne({
 			raw: true,
+			attributes: { exclude: ["password"] },
 			where: {
 				id,
 			},
 		});
 
+		console.log("GET_USER: ", user);
+
 		return res.send({
 			status: true,
-			data: {
-				id: user.id,
-				email: user.email,
-				firstname: user.firstname,
-				lastname: user.lastname,
-				role: user.roles,
-			},
+			data: user,
 		});
 	} catch (error) {
 		res.status(500).send({
@@ -39,7 +54,7 @@ exports.createUser = async (req, res) => {
 	if (!email && !password && !firstname && !lastname) {
 		res.status(400).send({
 			status: false,
-			type: "request",
+			type: "email",
 			message: "You need to include fields",
 		});
 	}
@@ -131,7 +146,16 @@ exports.updateUser = async (req, res) => {
 			}
 		}
 		if (password) {
-			user.password = password;
+			if (password.length > PASSWORD_LENGTH) {
+				let passwordHash = await bcrypt.hash(password, 12);
+				user.password = passwordHash;
+			} else {
+				return res.status(400).send({
+					status: false,
+					type: "password",
+					message: `This password ${password} is not valid`,
+				});
+			}
 		}
 		if (firstname) {
 			user.firstname = firstname;

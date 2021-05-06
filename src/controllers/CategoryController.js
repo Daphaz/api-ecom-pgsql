@@ -1,5 +1,6 @@
 const db = require("../models");
 const Category = db.rest.models.category;
+const Product = db.rest.models.product;
 import { capitalizeFirstLetter } from "../helpers";
 
 exports.getCategoryById = async (req, res) => {
@@ -128,6 +129,14 @@ exports.updateCategory = async (req, res) => {
 
 		const nameFormat = capitalizeFirstLetter(name);
 
+		const products = await Product.findAll({
+			where: { category: category.name },
+		});
+
+		const ids = products.map((product) => product.id);
+
+		Product.update({ category: nameFormat }, { where: { id: ids } });
+
 		category.name = nameFormat;
 
 		category.save();
@@ -160,6 +169,14 @@ exports.deleteCategory = async (req, res) => {
 				id,
 			},
 		});
+
+		const products = await Product.findAll({
+			where: { category: category.name },
+		});
+
+		const ids = products.map((product) => product.id);
+
+		Product.update({ category: null }, { where: { id: ids } });
 
 		await category.destroy();
 

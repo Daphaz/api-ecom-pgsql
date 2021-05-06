@@ -157,6 +157,27 @@
  *       type: number
  *       format: double
  *       description: price of carrier
+ *    Carousel:
+ *     type: object
+ *     required:
+ *        - illustration
+ *     properties:
+ *      title:
+ *       type: string
+ *       description: title of the slide
+ *      content:
+ *       type: string
+ *       format: text
+ *       description: text of the slide
+ *      illustration:
+ *       type: string
+ *       description: name of the image file
+ *      btn_title:
+ *       type: string
+ *       description: call to action inside the slide
+ *      btn_url:
+ *       type: string
+ *       description: link for the button
  *    Sucess_200:
  *     type: object
  *     properties:

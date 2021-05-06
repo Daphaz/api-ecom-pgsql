@@ -15,4 +15,6 @@
  *    description: address of the user
  *  - name: Carriers
  *    description: carrier for shipping
+ *  - name: Carousels
+ *    description: slider for the main page
  */

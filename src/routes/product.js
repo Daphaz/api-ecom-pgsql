@@ -5,6 +5,7 @@ const router = Router();
 
 router.get("/edit/:id", product.getProductById);
 router.get("/all", product.getProducts);
+router.get("/is-best", product.getProductsIsBest);
 router.post(
 	"/create",
 	verifyToken,

@@ -293,3 +293,27 @@ exports.deleteProduct = async (req, res) => {
 		});
 	}
 };
+
+exports.getProductsIsBest = async (req, res) => {
+	try {
+		const products = await Product.findAll({ raw: true, where: { isBest: 1 } });
+
+		if (products.length > 0) {
+			return res.send({
+				status: true,
+				message: "get all products",
+				data: products,
+			});
+		}
+
+		return res.send({
+			status: false,
+			type: "request",
+			message: "Don't find any products",
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
+};

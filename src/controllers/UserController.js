@@ -35,8 +35,6 @@ exports.getUser = async (req, res) => {
 			},
 		});
 
-		console.log("GET_USER: ", user);
-
 		return res.send({
 			status: true,
 			data: user,

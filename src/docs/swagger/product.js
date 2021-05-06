@@ -1,4 +1,70 @@
 /*----------------------- */
+// GET /product/edit/{id}
+/*----------------------- */
+
+/**
+ * @swagger
+ * /product/edit/{id}:
+ *  get:
+ *    summary: get one product for edit
+ *    description: information of one product
+ *    tags: [Products]
+ *    responses:
+ *     200:
+ *      description: Object of product
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Sucess_200'
+ *          example: {status: boolean,message: string,data: {}}
+ *     400:
+ *      description: Dont find any products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_4XX'
+ *     500:
+ *      description: server error verify the request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_500'
+ */
+
+/*----------------------- */
+// GET /product/is-best
+/*----------------------- */
+
+/**
+ * @swagger
+ * /product/is-best:
+ *  get:
+ *    summary: filter product by is best
+ *    description: products featured for homepage
+ *    tags: [Products]
+ *    responses:
+ *     200:
+ *      description: Array of products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Sucess_200'
+ *          example: {status: boolean,message: string,data: [{},{}]}
+ *     400:
+ *      description: Dont find any products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_4XX'
+ *     500:
+ *      description: server error verify the request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_500'
+ */
+
+/*----------------------- */
 // GET /product/all
 /*----------------------- */
 

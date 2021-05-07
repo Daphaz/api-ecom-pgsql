@@ -24,7 +24,15 @@ exports.getAllUser = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
-	const { id } = req.params;
+	const { id } = req.query;
+
+	if (!id) {
+		return res.status(400).send({
+			status: false,
+			type: "request",
+			message: "messaing some parameter",
+		});
+	}
 
 	try {
 		const user = await User.findOne({

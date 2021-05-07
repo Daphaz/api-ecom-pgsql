@@ -1,10 +1,10 @@
 /*----------------------- */
-// GET /user/{id}
+// GET /user
 /*----------------------- */
 
 /**
  * @swagger
- * /user/{id}:
+ * /user:
  *  get:
  *    security:
  *      - AdminAuth: []
@@ -16,12 +16,40 @@
  *          type:  string
  *          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjE5MDUxNjI3LCJleHAiOjE2MTkwNTIyMjd9.fk2PlDgFzfkz6nIl9pEYMksWkRw-cs9thcv0NPgqGIQ
  *    parameters:
- *      - in: path
+ *      - in: query
  *        name: id
  *        schema:
  *          type: string
  *        required: true
  *        description: the user id
+ *    responses:
+ *     200:
+ *      description: Object of user
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/User'
+ *     500:
+ *      description: Error request
+ */
+
+/*----------------------- */
+// GET /user/all
+/*----------------------- */
+
+/**
+ * @swagger
+ * /user/all:
+ *  get:
+ *    security:
+ *      - AdminAuth: []
+ *    summary: Get all user
+ *    description: only admin can use this route
+ *    tags: [Users]
+ *    headers:
+ *      Authorization:
+ *        schema:
+ *          type:  string
  *    responses:
  *     200:
  *      description: Object of user

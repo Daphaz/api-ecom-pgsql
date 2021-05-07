@@ -1,10 +1,10 @@
 /*----------------------- */
-// GET /address/{userId}/{id}
+// GET /edit
 /*----------------------- */
 
 /**
  * @swagger
- * /address/{userId}/{id}:
+ * /address/edit:
  *  get:
  *    security:
  *      - AdminAuth: []
@@ -12,14 +12,10 @@
  *    description: only user can get address
  *    tags: [Addresses]
  *    parameters:
- *      - in: path
- *        name: userId
- *        required: true
- *        description: id of the user
- *      - in: path
+ *      - in: query
  *        name: id
  *        required: true
- *        description: id of the address
+ *        description: id of address
  *    responses:
  *     200:
  *      description: object of one address
@@ -36,23 +32,18 @@
  */
 
 /*----------------------- */
-// GET /address/all/{userId}
+// GET /address/all
 /*----------------------- */
 
 /**
  * @swagger
- * /address/all/{userId}:
+ * /address/all:
  *  get:
  *    security:
  *      - AdminAuth: []
  *    summary: get all addresses of user
  *    description: only user can get all addresses
  *    tags: [Addresses]
- *    parameters:
- *      - in: path
- *        name: userId
- *        required: true
- *        description: id of the user
  *    responses:
  *     200:
  *      description: Array of all addresses

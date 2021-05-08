@@ -183,6 +183,55 @@ exports.updateUser = async (req, res) => {
 	}
 };
 
+exports.modifyPassword = async (req, res) => {
+	const userId = req.userId;
+	const { password } = req.body;
+
+	if (!password) {
+		return res.status(400).send({
+			type: "request",
+			message: "Need password field",
+		});
+	}
+
+	const user = await User.findOne({
+		where: {
+			id: userId,
+		},
+	});
+
+	if (!user) {
+		return res.status(400).send({
+			type: "request",
+			message: "user not found",
+		});
+	}
+
+	try {
+		if (password.length > PASSWORD_LENGTH) {
+			let passwordHash = await bcrypt.hash(password, 12);
+
+			user.password = passwordHash;
+
+			user.save();
+
+			return res.send({
+				status: true,
+				message: "password was updated",
+			});
+		}
+
+		res.status(400).send({
+			type: "password",
+			message: "password need minimum 5 caracter",
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${err.message}`,
+		});
+	}
+};
+
 exports.deleteUser = async (req, res) => {
 	const { id } = req.body;
 

@@ -139,6 +139,41 @@
  */
 
 /*----------------------- */
+// PUT /user/modify-password
+/*----------------------- */
+
+/**
+ * @swagger
+ * /user/modify-password:
+ *  put:
+ *    security:
+ *      - AdminAuth: []
+ *    summary: Update password user
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *            schema:
+ *              example: {password: string}
+ *    responses:
+ *      200:
+ *        description: The User password was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              example: {status: boolean, message: string}
+ *      400:
+ *        description: User not found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              example: {status: boolean,type: string, message: string}
+ *      500:
+ *        description: there is a server error
+ */
+
+/*----------------------- */
 // DELETE /user/delete
 /*----------------------- */
 

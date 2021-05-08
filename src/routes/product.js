@@ -6,6 +6,7 @@ const router = Router();
 router.get("/edit/:id", product.getProductById);
 router.get("/all", product.getProducts);
 router.get("/is-best", product.getProductsIsBest);
+router.get("/search", product.filterProduct);
 router.post(
 	"/create",
 	verifyToken,

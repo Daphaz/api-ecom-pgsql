@@ -9,6 +9,14 @@
  *    summary: get one product for edit
  *    description: information of one product
  *    tags: [Products]
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: string
+ *        format: uuid
+ *       required: true
+ *       description: id of the product
  *    responses:
  *     200:
  *      description: Object of product
@@ -78,6 +86,50 @@
  *    responses:
  *     200:
  *      description: Object of user
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Sucess_200'
+ *          example: {status: boolean,message: string,data: [{},{}]}
+ *     400:
+ *      description: Dont find any products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_4XX'
+ *     500:
+ *      description: server error verify the request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_500'
+ */
+
+/*----------------------- */
+// GET /product/search
+/*----------------------- */
+
+/**
+ * @swagger
+ * /product/search:
+ *  get:
+ *    summary: filter products
+ *    description: get a array of all products
+ *    tags: [Products]
+ *    parameters:
+ *     - in: query
+ *       name: search
+ *       schema:
+ *        type: string
+ *       description: search string
+ *     - in: query
+ *       name: category
+ *       schema:
+ *        type: string
+ *       description: name of category
+ *    responses:
+ *     200:
+ *      description: Object of products
  *      content:
  *        application/json:
  *          schema:

@@ -6,8 +6,6 @@ const Category = db.rest.models.category;
 exports.getProductById = async (req, res) => {
 	const { id } = req.params;
 
-	console.log(id);
-
 	try {
 		const product = await Product.findOne({
 			where: {
@@ -56,6 +54,55 @@ exports.getProducts = async (req, res) => {
 			message: `Error: ${error.message}`,
 		});
 	}
+};
+
+exports.filterProduct = async (req, res) => {
+	const { search, category } = req.query;
+
+	const products = await Product.findAll({ raw: true });
+
+	if (search && !category) {
+		const reg = search.match("/^[0-9]|[a-z]|[A-Z]$/")
+			? new RegExp(`${search}`, "i")
+			: new RegExp("''", "i");
+		const filter = products.filter((p) => reg.test(p.subtitle));
+
+		return res.send({
+			status: true,
+			data: filter,
+		});
+	}
+
+	if (!search && category) {
+		const newProducts = await Product.findAll({
+			where: { category: category },
+		});
+
+		return res.send({
+			status: true,
+			data: newProducts,
+		});
+	}
+
+	if (search && category) {
+		const newProducts = await Product.findAll({
+			where: { category: category },
+		});
+		const reg = search.match("/^[0-9]|[a-z]|[A-Z]$/")
+			? new RegExp(`${search}`, "i")
+			: new RegExp("''", "i");
+		const filter = newProducts.filter((p) => reg.test(p.subtitle));
+
+		return res.send({
+			status: true,
+			data: filter,
+		});
+	}
+
+	return res.send({
+		status: true,
+		data: products,
+	});
 };
 
 exports.createProduct = async (req, res) => {

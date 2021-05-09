@@ -1,4 +1,44 @@
 /*----------------------- */
+// GET /product
+/*----------------------- */
+
+/**
+ * @swagger
+ * /product:
+ *  get:
+ *    summary: get one product by slug
+ *    description: information of one product
+ *    tags: [Products]
+ *    parameters:
+ *     - in: query
+ *       name: slug
+ *       schema:
+ *        type: string
+ *       required: true
+ *       description: slug of the product
+ *    responses:
+ *     200:
+ *      description: Object of product
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Sucess_200'
+ *          example: {status: boolean,message: string,data: {}}
+ *     400:
+ *      description: Dont find any products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_4XX'
+ *     500:
+ *      description: server error verify the request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_500'
+ */
+
+/*----------------------- */
 // GET /product/edit/{id}
 /*----------------------- */
 

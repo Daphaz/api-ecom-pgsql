@@ -3,6 +3,35 @@ const { slugify } = require("../helpers");
 const Product = db.rest.models.product;
 const Category = db.rest.models.category;
 
+exports.getProductBySlug = async (req, res) => {
+	const { slug } = req.query;
+
+	try {
+		const product = await Product.findOne({
+			where: {
+				slug,
+			},
+		});
+
+		if (product) {
+			return res.send({
+				status: true,
+				message: "found product",
+				data: product,
+			});
+		}
+
+		return res.send({
+			status: false,
+			message: "Not found product",
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
+};
+
 exports.getProductById = async (req, res) => {
 	const { id } = req.params;
 

@@ -3,6 +3,7 @@ import { verifyToken, isAdmin, uploadImage } from "../utils";
 const product = require("../controllers/ProductController");
 const router = Router();
 
+router.get("/", product.getProductBySlug);
 router.get("/edit/:id", product.getProductById);
 router.get("/all", product.getProducts);
 router.get("/is-best", product.getProductsIsBest);

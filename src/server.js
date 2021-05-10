@@ -37,6 +37,7 @@ app.use("/address", routes.address);
 app.use("/carrier", routes.carrier);
 app.use("/order", routes.order);
 app.use("/carousel", routes.carousel);
+app.use("/cart", routes.cart);
 
 app.use((req, res) => {
 	res.status(404).send("404: Page not found");

@@ -142,7 +142,7 @@ exports.isAuth = async (req, res) => {
 
 		req.userId = user.id;
 
-		return res.send({
+		res.send({
 			status: true,
 			data: {
 				roles,

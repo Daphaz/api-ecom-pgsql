@@ -7,22 +7,20 @@ const cart = (sequelize, DataType) => {
 				primaryKey: true,
 				autoIncrement: true,
 			},
+			userId: {
+				type: DataType.UUID,
+				allowNull: false,
+			},
+			products: {
+				type: DataType.ARRAY(DataType.JSONB),
+				allowNull: true,
+			},
 		},
 		{
 			timestamps: true,
 			freezeTableName: true,
 		}
 	);
-
-	const User = sequelize.models.user;
-
-	User.hasOne(Cart, {
-		foriegnKey: {
-			type: DataType.UUID,
-			allowNull: false,
-		},
-	});
-	Cart.belongsTo(User);
 
 	Cart.sync();
 

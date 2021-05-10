@@ -1,6 +1,6 @@
 {
   "name": "api-pgsql",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "boilerplate api with postgresql",
   "main": "index.js",
   "scripts": {

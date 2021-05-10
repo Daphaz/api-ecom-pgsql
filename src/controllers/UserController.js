@@ -5,12 +5,39 @@ const User = db.rest.models.user;
 
 const PASSWORD_LENGTH = 5;
 
+exports.getAllUser = async (req, res) => {
+	try {
+		const users = await User.findAll({
+			raw: true,
+			attributes: { exclude: ["password"] },
+		});
+
+		return res.send({
+			status: true,
+			data: users,
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
+};
+
 exports.getUser = async (req, res) => {
-	const { id } = req.params;
+	const { id } = req.query;
+
+	if (!id) {
+		return res.status(400).send({
+			status: false,
+			type: "request",
+			message: "messaing some parameter",
+		});
+	}
 
 	try {
 		const user = await User.findOne({
 			raw: true,
+			attributes: { exclude: ["password"] },
 			where: {
 				id,
 			},
@@ -18,12 +45,7 @@ exports.getUser = async (req, res) => {
 
 		return res.send({
 			status: true,
-			data: {
-				id: user.id,
-				email: user.email,
-				firstname: user.firstname,
-				lastname: user.lastname,
-			},
+			data: user,
 		});
 	} catch (error) {
 		res.status(500).send({
@@ -38,7 +60,7 @@ exports.createUser = async (req, res) => {
 	if (!email && !password && !firstname && !lastname) {
 		res.status(400).send({
 			status: false,
-			type: "request",
+			type: "email",
 			message: "You need to include fields",
 		});
 	}
@@ -130,7 +152,16 @@ exports.updateUser = async (req, res) => {
 			}
 		}
 		if (password) {
-			user.password = password;
+			if (password.length > PASSWORD_LENGTH) {
+				let passwordHash = await bcrypt.hash(password, 12);
+				user.password = passwordHash;
+			} else {
+				return res.status(400).send({
+					status: false,
+					type: "password",
+					message: `This password ${password} is not valid`,
+				});
+			}
 		}
 		if (firstname) {
 			user.firstname = firstname;
@@ -146,6 +177,55 @@ exports.updateUser = async (req, res) => {
 			message: `User ${id} was updated !`,
 		});
 	} catch (err) {
+		res.status(500).send({
+			message: `Error: ${err.message}`,
+		});
+	}
+};
+
+exports.modifyPassword = async (req, res) => {
+	const userId = req.userId;
+	const { password } = req.body;
+
+	if (!password) {
+		return res.status(400).send({
+			type: "request",
+			message: "Need password field",
+		});
+	}
+
+	const user = await User.findOne({
+		where: {
+			id: userId,
+		},
+	});
+
+	if (!user) {
+		return res.status(400).send({
+			type: "request",
+			message: "user not found",
+		});
+	}
+
+	try {
+		if (password.length > PASSWORD_LENGTH) {
+			let passwordHash = await bcrypt.hash(password, 12);
+
+			user.password = passwordHash;
+
+			user.save();
+
+			return res.send({
+				status: true,
+				message: "password was updated",
+			});
+		}
+
+		res.status(400).send({
+			type: "password",
+			message: "password need minimum 5 caracter",
+		});
+	} catch (error) {
 		res.status(500).send({
 			message: `Error: ${err.message}`,
 		});

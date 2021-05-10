@@ -1,4 +1,118 @@
 /*----------------------- */
+// GET /product
+/*----------------------- */
+
+/**
+ * @swagger
+ * /product:
+ *  get:
+ *    summary: get one product by slug
+ *    description: information of one product
+ *    tags: [Products]
+ *    parameters:
+ *     - in: query
+ *       name: slug
+ *       schema:
+ *        type: string
+ *       required: true
+ *       description: slug of the product
+ *    responses:
+ *     200:
+ *      description: Object of product
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Sucess_200'
+ *          example: {status: boolean,message: string,data: {}}
+ *     400:
+ *      description: Dont find any products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_4XX'
+ *     500:
+ *      description: server error verify the request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_500'
+ */
+
+/*----------------------- */
+// GET /product/edit/{id}
+/*----------------------- */
+
+/**
+ * @swagger
+ * /product/edit/{id}:
+ *  get:
+ *    summary: get one product for edit
+ *    description: information of one product
+ *    tags: [Products]
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: string
+ *        format: uuid
+ *       required: true
+ *       description: id of the product
+ *    responses:
+ *     200:
+ *      description: Object of product
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Sucess_200'
+ *          example: {status: boolean,message: string,data: {}}
+ *     400:
+ *      description: Dont find any products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_4XX'
+ *     500:
+ *      description: server error verify the request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_500'
+ */
+
+/*----------------------- */
+// GET /product/is-best
+/*----------------------- */
+
+/**
+ * @swagger
+ * /product/is-best:
+ *  get:
+ *    summary: filter product by is best
+ *    description: products featured for homepage
+ *    tags: [Products]
+ *    responses:
+ *     200:
+ *      description: Array of products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Sucess_200'
+ *          example: {status: boolean,message: string,data: [{},{}]}
+ *     400:
+ *      description: Dont find any products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_4XX'
+ *     500:
+ *      description: server error verify the request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_500'
+ */
+
+/*----------------------- */
 // GET /product/all
 /*----------------------- */
 
@@ -32,6 +146,50 @@
  */
 
 /*----------------------- */
+// GET /product/search
+/*----------------------- */
+
+/**
+ * @swagger
+ * /product/search:
+ *  get:
+ *    summary: filter products
+ *    description: get a array of all products
+ *    tags: [Products]
+ *    parameters:
+ *     - in: query
+ *       name: search
+ *       schema:
+ *        type: string
+ *       description: search string
+ *     - in: query
+ *       name: category
+ *       schema:
+ *        type: string
+ *       description: name of category
+ *    responses:
+ *     200:
+ *      description: Object of products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Sucess_200'
+ *          example: {status: boolean,message: string,data: [{},{}]}
+ *     400:
+ *      description: Dont find any products
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_4XX'
+ *     500:
+ *      description: server error verify the request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Error_500'
+ */
+
+/*----------------------- */
 // POST /product/create
 /*----------------------- */
 
@@ -42,12 +200,12 @@
  *    security:
  *      - AdminAuth: []
  *    summary: create one product
- *    description: only user admin can create product, for de illustration we need input[type='file'] html with name "illustration" and the form will contain "enctype='multipart/form-data'"
+ *    description: only user admin can create product, for the illustration we need input[type='file'] html with name "illustration" and the form will contain "enctype='multipart/form-data'"
  *    tags: [Products]
  *    requestBody:
  *      required: true
  *      content:
- *        application/json:
+ *        multipart/form-data:
  *          schema:
  *            $ref: '#/components/schemas/Product'
  *          example: {name: string,slug: string,subtitle: string,description: string,price: number}

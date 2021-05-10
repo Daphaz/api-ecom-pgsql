@@ -5,6 +5,9 @@ import product from "./product";
 import resetPassword from "./resetPassword";
 import address from "./address";
 import carrier from "./carrier";
+import order from "./order";
+import carousel from "./carousel";
+import cart from "./cart";
 
 export default {
 	user,
@@ -14,4 +17,7 @@ export default {
 	resetPassword,
 	address,
 	carrier,
+	order,
+	carousel,
+	cart,
 };

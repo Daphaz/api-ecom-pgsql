@@ -25,6 +25,39 @@
  */
 
 /*----------------------- */
+// GET /category/edit/{id}
+/*----------------------- */
+
+/**
+ * @swagger
+ * /category/edit/{id}:
+ *  get:
+ *    summary: get on category for edit
+ *    tags: [Categories]
+ *    parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *        type: integer
+ *       required: true
+ *       description: Category id
+ *    responses:
+ *     200:
+ *      description: select category by ID
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Category'
+ *          example: {status: boolean,message: string, data: [{name : string}]}
+ *     500:
+ *      description: error request
+ *      content:
+ *        application/json:
+ *          schema:
+ *            example: {message: string}
+ */
+
+/*----------------------- */
 // POST /category/create
 /*----------------------- */
 
@@ -79,8 +112,7 @@
  *     - in: path
  *       name: id
  *       schema:
- *        type: string
- *        format: uuid
+ *        type: integer
  *       required: true
  *       description: Category id
  *    requestBody:

@@ -3,7 +3,11 @@ import { verifyToken, isAdmin, uploadImage } from "../utils";
 const product = require("../controllers/ProductController");
 const router = Router();
 
+router.get("/", product.getProductBySlug);
+router.get("/edit/:id", product.getProductById);
 router.get("/all", product.getProducts);
+router.get("/is-best", product.getProductsIsBest);
+router.get("/search", product.filterProduct);
 router.post(
 	"/create",
 	verifyToken,
@@ -18,7 +22,13 @@ router.put(
 	product.setCategoryProduct
 );
 router.put("/is-best/:id", verifyToken, isAdmin, product.setIsBest);
-router.put("/update/:id", verifyToken, isAdmin, product.updateProduct);
+router.put(
+	"/update/:id",
+	verifyToken,
+	isAdmin,
+	uploadImage.single("illustration"),
+	product.updateProduct
+);
 router.delete("/delete", verifyToken, isAdmin, product.deleteProduct);
 
 export default router;

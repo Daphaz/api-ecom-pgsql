@@ -3,7 +3,8 @@ const Address = db.rest.models.address;
 const User = db.rest.models.user;
 
 exports.getAddress = async (req, res) => {
-	const { id, userId } = req.params;
+	const { id } = req.query;
+	const userId = req.userId;
 
 	try {
 		const address = await Address.findOne({
@@ -27,7 +28,7 @@ exports.getAddress = async (req, res) => {
 };
 
 exports.getAllAddress = async (req, res) => {
-	const { userId } = req.params;
+	const userId = req.userId;
 
 	try {
 		const addresses = await Address.findAll({
@@ -99,7 +100,6 @@ exports.createAddress = async (req, res) => {
 
 exports.updateAddress = async (req, res) => {
 	const {
-		userId,
 		name,
 		firstname,
 		lastname,
@@ -110,6 +110,8 @@ exports.updateAddress = async (req, res) => {
 		country,
 		phone,
 	} = req.body;
+
+	const userId = req.userId;
 
 	const { id } = req.params;
 

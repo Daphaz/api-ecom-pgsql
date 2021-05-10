@@ -1,41 +1,38 @@
-const product = (sequelize, DataType) => {
-	const Product = sequelize.define(
-		"product",
+const order = (sequelize, DataType) => {
+	const Order = sequelize.define(
+		"order",
 		{
 			id: {
 				type: DataType.UUID,
 				defaultValue: DataType.UUIDV4,
 				primaryKey: true,
 			},
-			categoryId: {
+			userId: {
 				type: DataType.UUID,
+				allowNull: false,
 			},
-			name: {
+			carrierName: {
 				type: DataType.STRING(255),
 				allowNull: false,
 			},
-			slug: {
-				type: DataType.STRING(255),
-				allowNull: false,
-			},
-			illustration: {
-				type: DataType.STRING(255),
-				allowNull: false,
-			},
-			subtitle: {
-				type: DataType.STRING(255),
-				allowNull: false,
-			},
-			description: {
-				type: DataType.TEXT,
-				allowNull: false,
-			},
-			price: {
+			carrierPrice: {
 				type: DataType.DOUBLE,
 				allowNull: false,
 			},
-			isBest: {
-				type: DataType.SMALLINT,
+			delivery: {
+				type: DataType.TEXT,
+				allowNull: false,
+			},
+			reference: {
+				type: DataType.UUID,
+				defaultValue: DataType.UUIDV4,
+				allowNull: false,
+			},
+			stripeSessionId: {
+				type: DataType.STRING(255),
+			},
+			state: {
+				type: DataType.INTEGER,
 				defaultValue: 0,
 				allowNull: false,
 			},
@@ -46,9 +43,9 @@ const product = (sequelize, DataType) => {
 		}
 	);
 
-	Product.sync();
+	Order.sync();
 
-	return Product;
+	return Order;
 };
 
-export default product;
+export default order;

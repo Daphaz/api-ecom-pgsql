@@ -42,6 +42,7 @@ async function verifyToken(req, res, next) {
 		}
 
 		req.userRoles = user.roles;
+		req.userId = user.id;
 
 		return next();
 	} catch (error) {

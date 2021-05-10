@@ -1,7 +1,6 @@
 const db = require("../models");
 const { createToken, decodeToken } = require("../auth/utils");
 const bcrypt = require("bcryptjs");
-const cookie = require("cookie");
 const emailIsValid = require("email-validator");
 const User = db.rest.models.user;
 const ResetPassword = db.rest.models.resetPassword;
@@ -37,20 +36,8 @@ exports.login = async (req, res) => {
 	}
 
 	const token = await createToken(user.id);
-	const dateExpire = Date.now() + 10 * 60 * 1000;
 
-	res.setHeader(
-		"Set-Cookie",
-		cookie.serialize("token", token, {
-			httpOnly: true,
-			expires: new Date(dateExpire),
-		})
-	);
-
-	return res.send({
-		status: true,
-		message: "You are login",
-	});
+	return res.send(token);
 };
 
 exports.register = async (req, res) => {
@@ -121,7 +108,8 @@ exports.isAuth = async (req, res) => {
 	if (!token) {
 		return res.status(401).send({
 			status: false,
-			message: "We need token for authentification",
+			type: "jwt",
+			message: "You need token for authentification",
 		});
 	}
 
@@ -150,14 +138,14 @@ exports.isAuth = async (req, res) => {
 			});
 		}
 
-		const { email, firstname, lastname } = user;
+		const { roles } = user;
 
-		return res.send({
+		req.userId = user.id;
+
+		res.send({
 			status: true,
 			data: {
-				email,
-				firstname,
-				lastname,
+				roles,
 			},
 		});
 	} catch (error) {

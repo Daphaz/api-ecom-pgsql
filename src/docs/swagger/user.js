@@ -1,10 +1,10 @@
 /*----------------------- */
-// GET /user/{id}
+// GET /user
 /*----------------------- */
 
 /**
  * @swagger
- * /user/{id}:
+ * /user:
  *  get:
  *    security:
  *      - AdminAuth: []
@@ -16,12 +16,40 @@
  *          type:  string
  *          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjE5MDUxNjI3LCJleHAiOjE2MTkwNTIyMjd9.fk2PlDgFzfkz6nIl9pEYMksWkRw-cs9thcv0NPgqGIQ
  *    parameters:
- *      - in: path
+ *      - in: query
  *        name: id
  *        schema:
  *          type: string
  *        required: true
  *        description: the user id
+ *    responses:
+ *     200:
+ *      description: Object of user
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/User'
+ *     500:
+ *      description: Error request
+ */
+
+/*----------------------- */
+// GET /user/all
+/*----------------------- */
+
+/**
+ * @swagger
+ * /user/all:
+ *  get:
+ *    security:
+ *      - AdminAuth: []
+ *    summary: Get all user
+ *    description: only admin can use this route
+ *    tags: [Users]
+ *    headers:
+ *      Authorization:
+ *        schema:
+ *          type:  string
  *    responses:
  *     200:
  *      description: Object of user
@@ -102,6 +130,41 @@
  *              example: {status: boolean, message: string}
  *      400:
  *        description: User doesn't exists or email is inValid
+ *        content:
+ *          application/json:
+ *            schema:
+ *              example: {status: boolean,type: string, message: string}
+ *      500:
+ *        description: there is a server error
+ */
+
+/*----------------------- */
+// PUT /user/modify-password
+/*----------------------- */
+
+/**
+ * @swagger
+ * /user/modify-password:
+ *  put:
+ *    security:
+ *      - AdminAuth: []
+ *    summary: Update password user
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *            schema:
+ *              example: {password: string}
+ *    responses:
+ *      200:
+ *        description: The User password was updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              example: {status: boolean, message: string}
+ *      400:
+ *        description: User not found
  *        content:
  *          application/json:
  *            schema:

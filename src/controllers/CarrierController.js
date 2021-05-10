@@ -76,22 +76,22 @@ exports.updateCarrier = async (req, res) => {
 		if (!oldCarrier) {
 			return res.status(400).send({
 				status: false,
-				type: "request",
+				type: "price",
 				message: "Carrier not found",
 			});
 		}
 
 		if (name) {
-			oldAdress.name = name;
+			oldCarrier.name = name;
 		}
 		if (description) {
-			oldAdress.description = description;
+			oldCarrier.description = description;
 		}
 		if (price) {
-			oldAdress.price = price;
+			oldCarrier.price = price;
 		}
 
-		oldAdress.save();
+		oldCarrier.save();
 
 		res.send({
 			status: true,

@@ -7,7 +7,6 @@ import fs from "fs";
 import path from "path";
 import { specs, swaggerUI, optionsSwagger } from "./docs";
 import routes from "./routes";
-import { isAdmin, verifyToken } from "./utils";
 
 const app = express();
 
@@ -29,13 +28,16 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use("/static", express.static(path.resolve("uploads")));
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs, optionsSwagger));
-app.use("/user", verifyToken, isAdmin, routes.user);
+app.use("/user", routes.user);
 app.use("/auth", routes.auth);
 app.use("/category", routes.category);
 app.use("/product", routes.product);
 app.use("/reset", routes.resetPassword);
-app.use("/address", verifyToken, routes.address);
-app.use("/carrier", verifyToken, routes.carrier);
+app.use("/address", routes.address);
+app.use("/carrier", routes.carrier);
+app.use("/order", routes.order);
+app.use("/carousel", routes.carousel);
+app.use("/cart", routes.cart);
 
 app.use((req, res) => {
 	res.status(404).send("404: Page not found");

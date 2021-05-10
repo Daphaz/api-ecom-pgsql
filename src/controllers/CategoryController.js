@@ -1,5 +1,38 @@
 const db = require("../models");
 const Category = db.rest.models.category;
+const Product = db.rest.models.product;
+import { capitalizeFirstLetter } from "../helpers";
+
+exports.getCategoryById = async (req, res) => {
+	const { id } = req.params;
+
+	console.log(id);
+
+	try {
+		const category = await Category.findOne({
+			where: {
+				id,
+			},
+		});
+
+		if (category) {
+			res.send({
+				status: true,
+				message: "found category",
+				data: category,
+			});
+		}
+
+		return res.send({
+			status: false,
+			message: "Not found category",
+		});
+	} catch (error) {
+		res.status(500).send({
+			message: `Error: ${error.message}`,
+		});
+	}
+};
 
 exports.getCategories = async (req, res) => {
 	try {
@@ -35,11 +68,13 @@ exports.createCategory = async (req, res) => {
 		});
 	}
 
+	const nameFormat = capitalizeFirstLetter(name);
+
 	try {
 		const categoryExist = await Category.findOne({
 			raw: true,
 			where: {
-				name,
+				name: nameFormat,
 			},
 		});
 
@@ -51,7 +86,7 @@ exports.createCategory = async (req, res) => {
 			});
 		}
 
-		const category = await Category.create({ name });
+		const category = await Category.create({ name: nameFormat });
 
 		res.send({
 			status: true,
@@ -92,7 +127,17 @@ exports.updateCategory = async (req, res) => {
 			});
 		}
 
-		category.name = name;
+		const nameFormat = capitalizeFirstLetter(name);
+
+		const products = await Product.findAll({
+			where: { category: category.name },
+		});
+
+		const ids = products.map((product) => product.id);
+
+		Product.update({ category: nameFormat }, { where: { id: ids } });
+
+		category.name = nameFormat;
 
 		category.save();
 
@@ -124,6 +169,14 @@ exports.deleteCategory = async (req, res) => {
 				id,
 			},
 		});
+
+		const products = await Product.findAll({
+			where: { category: category.name },
+		});
+
+		const ids = products.map((product) => product.id);
+
+		Product.update({ category: null }, { where: { id: ids } });
 
 		await category.destroy();
 

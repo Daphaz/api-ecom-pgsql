@@ -3,6 +3,7 @@ import { verifyToken, isAdmin } from "../utils";
 const category = require("../controllers/CategoryController");
 const router = Router();
 
+router.get("/edit/:id", category.getCategoryById);
 router.get("/all", category.getCategories);
 router.post("/create", verifyToken, isAdmin, category.createCategory);
 router.put("/update/:id", verifyToken, isAdmin, category.updateCategory);

@@ -4,7 +4,7 @@
 
 /**
  * @swagger
- * /carrier/{id}:
+ * /carrier/edit/{id}:
  *  get:
  *    security:
  *      - AdminAuth: []
@@ -42,7 +42,7 @@
  *    security:
  *      - AdminAuth: []
  *    summary: get all carriers
- *    description: only user can get all carriers
+ *    description: only user can get carriers
  *    tags: [Carriers]
  *    responses:
  *     200:

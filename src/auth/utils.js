@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 export async function createToken(id) {
 	try {
 		return jwt.sign({ id }, process.env.JWT_PAYLOAD, {
-			expiresIn: 600,
+			expiresIn: 86400,
 		});
 	} catch (error) {
 		console.log("CreateToken: ", error);

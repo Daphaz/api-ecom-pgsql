@@ -103,6 +103,10 @@ multer | Storage image
 - Authentification
 - ResetPassword
 - Products
-- Categorires
+- Categories
 - Addresses
 - Carriers
+
+### v1.1.0
+- Carousel
+- Cart
